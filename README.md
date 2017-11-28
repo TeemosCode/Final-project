@@ -11,14 +11,10 @@ Help user's simulate total time it takes to finish a project based on individual
 Does the user's initial conjecture of total duration of the project land within 95% Confidence Interval of the simulation.
 
 ### Simulation's variables of uncertainty
-List and describe your simulation's variables of uncertainty (where you're using pseudo-random number generation). 
-For each such variable, how did you decide the range and which probability distribution to use?  
-Do you think it's a good representation of reality?
---------------------------------------------------------------------
 It depends on the user's input and the distribution of their choice the program provides. (PERT, Normal & Uniform)
 
 ## Instructions on how to use the program:
-Iput the variable names, best case, worst case and choose the distribution model for each variable.
+Input the variable names, best case, worst case and choose the distribution model for each variable.
 
 ## Sources Used:
 https://summerofhpc.prace-ri.eu/bringing-visualisation-to-the-web-with-python-and-bokeh/
