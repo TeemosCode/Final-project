@@ -1,4 +1,3 @@
-TEMPLATE for your report:
 
 # Title: Time Management
 
