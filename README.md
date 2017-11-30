@@ -27,12 +27,12 @@ Simulate the total Process time of going to school.
 Programming language: Python3
 Web Framework: Flask
 
-Delivering visual plots to the web browser in web apps: 
+Delivering visual plots to the web browser in web apps:\n
 https://summerofhpc.prace-ri.eu/bringing-visualisation-to-the-web-with-python-and-bokeh/
 https://blog.modeanalytics.com/python-interactive-plot-libraries/
 https://www.reddit.com/r/Python/comments/21feci/any_good_ways_of_making_charts_in_web_apps/
 
-Flask Usage:
+Flask Usage:\n
 https://www.tutorialspoint.com/flask/
 https://stackoverflow.com/questions/37754079/python-flask-processing-input-obtained-from-front-end-in-the-back-end
 https://stackoverflow.com/questions/11556958/sending-data-from-html-form-to-a-python-script-in-flask
