@@ -37,3 +37,9 @@ Flask Usage:
 - https://stackoverflow.com/questions/37754079/python-flask-processing-input-obtained-from-front-end-in-the-back-end
 - https://stackoverflow.com/questions/11556958/sending-data-from-html-form-to-a-python-script-in-flask
 - https://pythonspot.com/en/flask-web-app-with-python/
+
+frontend codes like login logout based on:
+- https://github.com/bluedrops/passport_demo
+
+## To start the web:
+First, `npm install`. Then make sure you have two terminals open; in one, type `npm start` to run the backend, and in the other, type `npm run dev` to run the frontend. 
