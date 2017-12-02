@@ -107,7 +107,7 @@ class UI:
 		elif mode == 3:
 			dist_values = [] # for holding distribution values 
 			if dist == "1": # Normal dist
-				self.mtprint("Please enter Mean and Standard_deviation of Normal Distribution")
+				self.mtprint("Please enter Mean and Standard_deviation of Normal Distribution (Inte the Same Unit)")
 				mean = input("Mean : --> ")
 				while not mean.isnumeric() and float(mean) > 0:
 					print("Invalid mean input, Again!")
@@ -123,7 +123,7 @@ class UI:
 				dist_values.append(float(std))
 
 			elif dist == "2": # PERT dist
-				self.mtprint("Please enter WORST, MOST LIKELY and BEST case of PERT Distribution")
+				self.mtprint("Please enter WORST, MOST LIKELY and BEST case of PERT Distribution (In the Same Unit)")
 				worst = input("WORST : --> ")
 				while not worst.isnumeric() and float(worst) > 0:
 					print("Invalid mean input, Again!")
@@ -146,7 +146,7 @@ class UI:
 				dist_values.append(float(best))
 
 			elif dist == "3": # Uniform dist
-				self.mtprint("Please enter MIN and MAX value of Uniform Distribution")
+				self.mtprint("Please enter MIN and MAX value of Uniform Distribution (In the Same Unit)")
 
 				Min = input("MIN : --> ")
 				while not Min.isnumeric() and float(Min) > 0:
