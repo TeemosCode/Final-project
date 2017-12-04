@@ -12,38 +12,11 @@ const options = [
 
 class Dashboard extends Component {
 
-    constructor() {
-        super();
-        this.state = {
-            isLoggedIn: false
-        }
 
-        this.logOut = this.logOut.bind(this);
-
-    }
-
-    componentDidMount() {
-        axios.get('/api/profile').then( (res) => {
-            console.log(res);
-            this.setState({
-                isLoggedIn: true
-            })
-        }).catch( (err) => {
-            this.setState({
-                isLoggedIn: false
-            })
-        })
-    }
-
-    logOut() {
-        axios.get('/api/logout').then( (res) => {
-            console.log("Logged out");
-        })
-    }
 
     render() {
 
-        if (this.state.isLoggedIn) {
+
             return(
               <div className = "Dashboard">
 
@@ -112,52 +85,20 @@ class Dashboard extends Component {
                      </List>
                    </Grid.Column>
                    <Grid.Column width = {3}>
-                       <Card>
-                      <Image src='https://farm5.staticflickr.com/4531/38649907436_946ed319d4_o_d.jpg' />
-                      <Card.Content>
-                       <Card.Header>
-                         Yan
-                       </Card.Header>
-                       <Card.Meta>
-                         <span className='date'>
-                           Registered in 2017
-                         </span>
-                       </Card.Meta>
-                       <Card.Description>
-                         Yan is a master student in UIUC.
-                       </Card.Description>
-                      </Card.Content>
-                      <Card.Content extra>
-                       <a>
-                         <Icon name='user' />
-                         2 Friends
-                       </a>
-                      </Card.Content>
-                      </Card>
+
                    </Grid.Column>
                  </Grid.Row>
                  </Grid>
                  <div className="logOut">
                     <Link to="/" onClick={this.logOut}>
-                      <Button>Log out</Button>
+                      <Button>Back</Button>
                     </Link>
                 </div>
                 </div>
               </div>
 
             )
-        } else {
-            return(
-                <div className="Dashboard">
-                    <Card>
-                        <h1>You must log in before you can see this page.</h1>
-                        <Link to="/">
-                            Back
-                        </Link>
-                    </Card>
-                </div>
-            )
-        }
+
     }
 }
 

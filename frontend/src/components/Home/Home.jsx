@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Card, Menu, activeItem, Container, Image, Header, Segment, Grid, List, Divider, Icon } from 'semantic-ui-react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import Register from '../Register/Register.jsx'
-import Login from '../Login/Login.jsx'
+
 import Dashboard from '../Dashboard/Dashboard.jsx'
 
 import styles from './styles.scss'
@@ -17,7 +16,7 @@ class Home extends Component {
               <div className="titlePlusBgImg">
                 <div className="contentCenter">
                   <p>MANAGE YOUR TIME</p>
-                  <Link to = {'/register'}>
+                  <Link to = {'/dashboard'}>
                       <Button primary size='huge'>
                       Get Started
                       <Icon name='right arrow' />
@@ -95,7 +94,7 @@ class Home extends Component {
                   </Container>
                 </Segment>
                 <Switch>
-                    <Route exact path="/register" component={Register}/>
+                    <Route exact path="/dashboard" component={Dashboard}/>
                 </Switch>
             </div>
         )
