@@ -1,0 +1,12 @@
+<html>
+
+   <head>
+      <script type = "text/javascript" 
+         src = "{{ url_for('static', filename = 'hello.js') }}" ></script> <!-- loading in static files, the first param 'static' for url_for  is the /static directory-->
+   </head>
+   
+   <body>
+      <input type = "button" onclick = "sayHello()" value = "Say Hello" /><!-- Using and Calling static files, the sayHello() function is written in hello.js that resides in the /static folder-->
+   </body>
+   
+</html>
