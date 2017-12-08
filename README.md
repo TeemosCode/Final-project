@@ -38,8 +38,11 @@ Flask Usage:
 - https://stackoverflow.com/questions/11556958/sending-data-from-html-form-to-a-python-script-in-flask
 - https://pythonspot.com/en/flask-web-app-with-python/
 
-frontend codes like login logout based on:
+frontend codes based on(Changes has been made in file "frontend"):
 - https://github.com/bluedrops/passport_demo
 
 ## To start the web:
-First, `npm install`. Then make sure you have two terminals open; in one, type `npm start` to run the backend, and in the other, type `npm run dev` to run the frontend. 
+1. Install dependencies: `cd Final-project`, then `npm install`
+2. Then make sure you have two terminals open; in one, type `npm start` to run the backend, and in the other, type `npm run dev` to run the frontend. 
+3. Open a browser and go to `http://localhost:3000/` to view the page.
+4. Press the button "get started", then go to the main page to add tasks and run simulation
