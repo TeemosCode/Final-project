@@ -23,10 +23,16 @@ class Simulator:
 		plt.axvline(x_user_estimate, color = "red") # plot vertical line to represent the value of user's estimation before the simulation
 		plt.show()
 
-	def final_statistical_summary(self):
+
+
+	def final_statistical_summary(self, user_estimate):
 		print("\n==========Statistical Results=============")
 		pd_series = pd.Series(self.total) # change the ndarray of final simulation total to pandas series for its statistical methods
 		print(pd_series.describe()) # print out the statistical summary in the standard output
+
+		# show the difference of user's estimate with mean of simulation
+		print('\n---The Difference of your Estimation and the Mean of the Simulation :  {} ---'.format(user_estimate - pd_series.mean()))
+
 
 	def normal_distribution(self, mean, standard_deviation, size = 10000):
 		normal =np.random.normal(loc=mean, scale=standard_deviation, size=size)
@@ -207,7 +213,7 @@ class UI:
 		print(total)
 		simulator.total = total
 		simulator.final_plotting(self.user_estimate) # plot out the result
-		simulator.final_statistical_summary() # print out the statistical summary
+		simulator.final_statistical_summary(self.user_estimate) # print out the statistical summary
 
 	def user_estimates(self):
 		self.mtprint("What is you're estimated outcome of total time for your project duration??")
