@@ -1,3 +1,7 @@
+body {
+    background-color: #ffffff;
+
+}
 .background {
     background-color: blue;
 
@@ -11,6 +15,10 @@
   font-size: 1.3vw;
 
 }
+.page{
+  margin:4vw;
+
+}
 .dashboard{
   margin-top: 2.6vw;
 
@@ -20,5 +28,8 @@
 }
 .form{
   margin:1vw;
+  padding: 1vw;
+}
+.modal{
   padding: 1vw;
 }
