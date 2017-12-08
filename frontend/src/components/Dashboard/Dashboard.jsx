@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Card, Menu, activeItem, Container, Image, Header, Segment, Grid, List, Divider, Icon, Input, Dropdown, Modal, Form, Select } from 'semantic-ui-react'
+import { Button, Card, Menu, activeItem, Table, Container, Image, Header, Segment, Grid, List, Divider, Icon, Input, Dropdown, Modal, Form, Select } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
@@ -45,7 +45,6 @@ var taskItems = [
   }
 ];
 
-
 class Dashboard extends Component {
 
     constructor(props) {
@@ -59,33 +58,40 @@ class Dashboard extends Component {
             most_likely_case: '',
             best_case: '',
             max_value: '',
-            min_value: ''
+            min_value: '',
+            outerModalOpen: false,
+            innerModalOpen: false
 
           };
 
-          this.allTasks = [];
-          this.getTaskList = this.getTaskList.bind(this);
+          this.taskTable = [];
+          this.getTable = this.getTable.bind(this);
+
           this.getDistributionForm = this.getDistributionForm.bind(this);
           this.handleInputChange = this.handleInputChange.bind(this);
           this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    getTaskList(){
-      this.allTasks = taskItems.map((task)=>{
+
+    getTable(){
+      this.taskTable = taskItems.map((task)=>{
 
         return(
-          <List.Item>
-          <List.Content floated='right'>
-            <Icon name='zoom' />
-          </List.Content>
-          <List.Content>
-          {task.task_name}
-          </List.Content>
-        </List.Item>
+          <Table.Row>
+            <Table.Cell>{task.task_name}</Table.Cell>
+            <Table.Cell>{task.value}</Table.Cell>
+            <Table.Cell>{task.mean}</Table.Cell>
+            <Table.Cell>{task.standard_deviation}</Table.Cell>
+            <Table.Cell>{task.worst_case}</Table.Cell>
+            <Table.Cell>{task.most_likely_case}</Table.Cell>
+            <Table.Cell>{task.best_case}</Table.Cell>
+            <Table.Cell>{task.max_value}</Table.Cell>
+            <Table.Cell>{task.min_value}</Table.Cell>
+
+          </Table.Row>
         )
       })
     }
-
     getDistributionForm(){
           if (this.state.value == "Normal"){
             return(
@@ -177,7 +183,7 @@ class Dashboard extends Component {
         [name]: value
       });
       var inputs = {[name]: value};
-      console.log(event.target);
+      // console.log(event.target);
 
     }
 
@@ -198,26 +204,59 @@ class Dashboard extends Component {
       taskItems.push(new_task);
       console.log(taskItems);
       this.setState({});
+      this.setState({ innerModalOpen: true })
+      this.setState({
+        value: 'Choose',
+        task_name: '',
+        mean: '',
+        standard_deviation: '',
+        worst_case: '',
+        most_likely_case: '',
+        best_case: '',
+        max_value: '',
+        min_value: ''
+      });
     }
     render() {
-            this.getTaskList();
+            this.getTable();
             this.distributionForm = this.getDistributionForm();
+            const modal = {
+              textAlign: 'center'
+            };
             return(
               <div className = "Dashboard">
+                <div className = "page">
+                        <div className = "table">
+                        <Table color='blue' textAlign='center'>
+                          <Table.Header>
+                            <Table.Row>
+                              <Table.HeaderCell>Task Name</Table.HeaderCell>
+                              <Table.HeaderCell>Distribution</Table.HeaderCell>
+                              <Table.HeaderCell>Mean</Table.HeaderCell>
+                              <Table.HeaderCell>Standard_deviation</Table.HeaderCell>
+                              <Table.HeaderCell>Worst Case</Table.HeaderCell>
+                              <Table.HeaderCell>Most Likely Case</Table.HeaderCell>
+                              <Table.HeaderCell>Best Case</Table.HeaderCell>
+                              <Table.HeaderCell>Max Value</Table.HeaderCell>
+                              <Table.HeaderCell>Min Value</Table.HeaderCell>
+                            </Table.Row>
+                          </Table.Header>
 
+                          <Table.Body>
+                          {this.taskTable}
+                          </Table.Body>
+                        </Table>
+                        </div>
+                        <div className = "modal">
+                        <Modal
+                          trigger={<Button basic style = {modal} color='blue' onClick={() => this.setState({ outerModalOpen: true })}>Add New Task</Button>}
+                          open={this.state.outerModalOpen}
+                          onClose={() => this.setState({ outerModalOpen: false })}
+                          closeIcon
+                        >
 
-                <div>
-                <Grid columns={3} divided>
-                 <Grid.Row>
-                   <Grid.Column width = {3}>
-                   </Grid.Column>
-                   <Grid.Column width = {8}>
-                     <List divided verticalAlign='middle'>
-                        {this.allTasks}
-
-                        <Modal trigger={<Button>Add New Task</Button>} closeIcon>
                         <div className = "form">
-                          <Form onSubmit={this.handleSubmit}>
+                          <Form>
                             <Form.Group widths='equal'>
                               <Form.Field>
                                 <label>Task Name</label>
@@ -242,22 +281,40 @@ class Dashboard extends Component {
                             </Form.Group>
                             {this.distributionForm}
 
-                            <Form.Field control={Button}>Submit</Form.Field>
                           </Form>
                         </div>
-                        </Modal>
-                     </List>
-                   </Grid.Column>
-                   <Grid.Column width = {3}>
+                        <Modal.Actions>
+                          <Modal
+                            trigger={<Button onClick={this.handleSubmit}>Submit</Button>}
+                            open={this.state.innerModalOpen}
+                            onClose={() => this.setState({ innerModalOpen: false })}
+                          >
+                            <Header icon='archive' content='Successfully submitted' />
 
-                   </Grid.Column>
-                 </Grid.Row>
-                 </Grid>
-                 <div className="logOut">
-                    <Link to="/" onClick={this.logOut}>
-                      <Button>Back</Button>
-                    </Link>
-                </div>
+                            <Modal.Content>
+                              <p>You have submitted one task, do you want to add more?</p>
+                            </Modal.Content>
+                            <Modal.Actions>
+                              <Button basic color='red' onClick={() => this.setState({ innerModalOpen: false, outerModalOpen: false })}>
+                                <Icon name='remove' /> No
+                              </Button>
+                              <Button color='green' onClick={() => this.setState({ innerModalOpen: false })}>
+                                <Icon name='checkmark' /> Yes
+                              </Button>
+                            </Modal.Actions>
+                          </Modal>
+                        </Modal.Actions>
+                        </Modal>
+                        </div>
+                        <Button.Group floated='right'>
+                          <Button>
+                            <Icon name='play' />Run simulation
+                          </Button>
+                              <Link to="/" onClick={this.logOut}>
+                                <Button>Back</Button>
+                              </Link>
+                            </Button.Group>
+
                 </div>
               </div>
 
