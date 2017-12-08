@@ -18,11 +18,13 @@ class Simulator:
 			self.sim_size = int(self.sim_size) # coeric it to integer type so it won't create a bug when calling distribution methods
 
 
-	def final_plotting(self):
+	def final_plotting(self, x_user_estimate): # Plots out the final simulation to show its distribution with a histogram
 		plt.hist(self.total, bins=300, normed=True)
+		plt.axvline(x_user_estimate, color = "red") # plot vertical line to represent the value of user's estimation before the simulation
 		plt.show()
 
 	def final_statistical_summary(self):
+		print("\n==========Statistical Results=============")
 		pd_series = pd.Series(self.total) # change the ndarray of final simulation total to pandas series for its statistical methods
 		print(pd_series.describe()) # print out the statistical summary in the standard output
 
@@ -68,6 +70,7 @@ class UI:
 		self.varnames = {} # A dictionary containing all information regarding each variable names {"varName" : {"Distribution" : [values]}, }
 		self.varResults = {} # Dictionary containing the result ndarray of each variable names and final total {"varName" : [ndarray], "Total":[ndarray]}
 		self.distribution_choices =  {"1":"Normal Distribution", "2":"PERT Distribution", "3":"Uniform Distribution"}
+		self.user_estimate = 0 # The total time of the project the user themself estimate. They will be prompted to key in their answer near the end of run_program
 	
 	def mtprint(self, title, additionals=''):
 		"""Menu title print"""
@@ -162,10 +165,13 @@ class UI:
 
 				dist_values.append(float(Max))
 
-			# set nested distribution dic value to dist_values
+			# set nested distribution dictionary value to dist_values
 			self.varnames[varname][self.distribution_choices[dist]] = dist_values
 
 	def initialize(self):
+		"""
+		Used to initialize all instance values of the UI class if users want to rerun the program without restarting the program
+		"""
 		self.varnames = {} # A dictionary containing all information regarding each variable names {"varName" : {"Distribution" : [values]}, }
 		self.varResults = {} # Dictionary containing the result ndarray of each variable names and final total {"varName" : [ndarray], "Total":[ndarray]}
 
@@ -173,7 +179,6 @@ class UI:
 		simulator = Simulator() # create the object instance of Simulator
 		first_count = 0 # for ease of initializing a variable to add up the rest of the calculated ndarray results
 		simulated = 0
-		print(list(self.varnames["1"].keys())[0])
 		for var_name in self.varnames:
 			
 			if list(self.varnames[var_name].keys())[0] == "Normal Distribution":
@@ -201,9 +206,16 @@ class UI:
 		print(self.varResults)
 		print(total)
 		simulator.total = total
-		simulator.final_plotting() # plot out the result
+		simulator.final_plotting(self.user_estimate) # plot out the result
 		simulator.final_statistical_summary() # print out the statistical summary
 
+	def user_estimates(self):
+		self.mtprint("What is you're estimated outcome of total time for your project duration??")
+		estimate = input(":--> ")
+		while not estimate.isnumeric():
+			print("Invalid input. Please type in numbers!")
+			estimate = input(":--> ")
+		self.user_estimate = int(estimate) # save the user estimate value to instance variable user_estimate
 
 	def run_program(self):
 		quit = False # flag for keeping track if user wants to end program or not
@@ -216,6 +228,10 @@ class UI:
 				self.mtprint("Would you like to run Simulation? (Press 'r' to run simulation, else keep adding in variables)")
 				simu_answer = input("Answer : --> ")
 				if simu_answer == "r":
+					# If user wants to run simulation, first let them enter their estimate value
+					self.user_estimates()
+					print("Running Simulation....\n....\n....")
+
 					self.run_simulation() # Run simulation
 					# After simulation is done and statistical outputs are shown, prompt if user wants to continue or not
 					self.mtprint("Do you want to exit the program? (Press 'y' to quit, else program restarts)")
