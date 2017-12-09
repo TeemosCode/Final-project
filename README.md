@@ -16,7 +16,7 @@ Does the user's initial conjecture of total duration of the project land within 
 ### Simulation's variables of uncertainty
 It depends on the user's input and the distribution of their choice the program provides. (PERT, Normal & Uniform)
 
-## Instructions on how to use the program:
+# Instructions on how to use the program:
 Input the variable names, choose the distribution model for each variable and input the values according to the chosen distribution.
 - (Brief simple example:
 - EX.
@@ -26,13 +26,13 @@ Input the variable names, choose the distribution model for each variable and in
      - input values: (Mean, SD), (low, high), (Best, most likely, Worst)
 - )
 
-# Terminal Program:
+#### Terminal Program:
 - First the program would prompt users to input Task names, then it would prompt the users to enter the choice of the task distribution ( choosing between 1[Normal Distribution], 2[PERT Distribution] and 3[Uniform] ), if users' input is invalid over 3 times, the program would set the default distribution to PERT distribution for that task. Lastly, the program would prompt users to input the statistical values corresponding with the distribution.
 - Then the above process would be repeated at least three times before the program prompts user if they want to run the simulation or not. If user does not choose to run the simulation yet, the program would keep repeating the above process to keep adding in more tasks and its information until the user chooses to run the simulation.
 - When the user wants to run the simulation, the program would prompt user to input their estimated duration of unit time of the whole project process, then simulation would run and output a plot of the final simulation with user's estimate as a vertical red line for clear visualization of their estimation in the simulation.
 - After closing off the plot, the program would display the statistical summary of the simulation, and further prompt the user if they want to keep using the simulation to resimulate a different project.
 
-# Web Program (Under Construction):
+#### Web Program (Under Construction):
 - Intuitive and neat looking user interface for user's to click, choose and typein the task names, distribution and statistical values to run the simulation and generate output plots and statistical summary on the webpage.
 
 ## Sources Used:
