@@ -58,3 +58,6 @@ frontend codes based on(Changes has been made in file "frontend"):
 2. Then make sure you have two terminals open; in one, type `npm start` to run the backend, and in the other, type `npm run dev` to run the frontend. 
 3. Open a browser and go to `http://localhost:3000/` to view the page.
 4. Press the button "get started", then go to the main page to add tasks and run simulation
+
+##### Web framework(flask):
+We have currently finished the backend program of the Monte Carlo Simulation as well as the web User Interface. All we need now is to combine them together to form a working web framework. However, with our current situation (Finals creeping up on us), we are still trying and working on migrating code and combining front-end(React) and back-end(flask)
