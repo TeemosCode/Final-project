@@ -26,6 +26,7 @@ Input the variable names, choose the distribution model for each variable and in
 ## Sources Used:
 - Programming language: Python3
 - Web Framework: Flask
+- Frontend language: HTML, CSS, Javascript
 
 Delivering visual plots to the web browser in web apps:
 - https://summerofhpc.prace-ri.eu/bringing-visualisation-to-the-web-with-python-and-bokeh/
@@ -38,11 +39,18 @@ Flask Usage:
 - https://stackoverflow.com/questions/11556958/sending-data-from-html-form-to-a-python-script-in-flask
 - https://pythonspot.com/en/flask-web-app-with-python/
 
-frontend codes based on(Changes has been made in file "frontend"):
+Frontend based on: React.js
+
+Frontend codes based on(Changes has been made in file "frontend"):
 - https://github.com/bluedrops/passport_demo
+
+Frontend UI design:
+- Semantic UI React: https://react.semantic-ui.com/introduction
+
+
 
 ## To start the web:
 1. Install dependencies: `cd Final-project`, then `npm install`
-2. Then make sure you have two terminals open; in one, type `npm start` to run the backend, and in the other, type `npm run dev` to run the frontend. 
+2. Then make sure you have two terminals open; in one, type `npm start` to run the backend, and in the other, type `npm run dev` to run the frontend.
 3. Open a browser and go to `http://localhost:3000/` to view the page.
 4. Press the button "get started", then go to the main page to add tasks and run simulation

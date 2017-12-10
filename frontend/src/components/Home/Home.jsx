@@ -6,6 +6,9 @@ import Dashboard from '../Dashboard/Dashboard.jsx'
 
 import styles from './styles.scss'
 
+//homepage component
+//by pressing button "get started", you can go to the main page(dashboard) to manage time
+//group members and group information are in the Container tag
 
 class Home extends Component {
     render() {
@@ -25,7 +28,6 @@ class Home extends Component {
 
                 </div>
               </div>
-
 
             <Container>
 
@@ -54,7 +56,6 @@ class Home extends Component {
 
             </Grid>
             </Container>
-
             <Segment
                   inverted
                   vertical

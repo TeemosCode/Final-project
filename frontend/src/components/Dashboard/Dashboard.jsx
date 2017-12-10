@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Card, Menu, activeItem, Table, Container, Image, Header, Segment, Grid, List, Divider, Icon, Input, Dropdown, Modal, Form, Select } from 'semantic-ui-react'
+import { Button, Card, Menu, activeItem, Table, Container, Rating, Image, Header, Segment, Grid, List, Divider, Icon, Input, Dropdown, Modal, Form, Select } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
@@ -10,39 +10,7 @@ const options = [
   { key: 'Uniform', text: 'Uniform', value: 'Uniform' }
 ]
 var taskItems = [
-  {
-    "task_name" : "Get out of bed",
-    "value" : "Normal",
-    "mean" : "4",
-    "standard_deviation" : "0.9",
-    "worst_case" : null,
-    "most_likely_case" : null,
-    "best_case" : null,
-    "max_value" : null,
-    "min_value" : null
-  },
-  {
-    "task_name" : "Tie shoelace",
-    "value" : "PERT",
-    "mean" : null,
-    "standard_deviation" : null,
-    "worst_case" : 5,
-    "most_likely_case" : 1,
-    "best_case" : 0.5,
-    "max_value" : null,
-    "min_value" : null
-  },
-  {
-    "task_name" : "Walk to school",
-    "value" : "Uniform",
-    "mean" : null,
-    "standard_deviation" : null,
-    "worst_case" : null,
-    "most_likely_case" : null,
-    "best_case" : null,
-    "max_value" : 30,
-    "min_value" : 10
-  }
+
 ];
 
 class Dashboard extends Component {
@@ -66,13 +34,12 @@ class Dashboard extends Component {
 
           this.taskTable = [];
           this.getTable = this.getTable.bind(this);
-
           this.getDistributionForm = this.getDistributionForm.bind(this);
           this.handleInputChange = this.handleInputChange.bind(this);
           this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-
+    //put all the task items into task table, then the table will render in the page
     getTable(){
       this.taskTable = taskItems.map((task)=>{
 
@@ -93,6 +60,8 @@ class Dashboard extends Component {
       })
     }
     getDistributionForm(){
+      //if you press normal distribution, the value is "Normal", then it will only appear mean and sd
+
           if (this.state.value == "Normal"){
             return(
               <Form.Group widths='equal'>
@@ -116,6 +85,8 @@ class Dashboard extends Component {
                 </Form.Field>
               </Form.Group>
             )
+            //if you press PERT distribution, the value is "PERT", then it will only appear worst_case, most_likely_case and best_case
+
           }else if (this.state.value == "PERT") {
             return(
               <Form.Group widths='equal'>
@@ -148,6 +119,8 @@ class Dashboard extends Component {
                 </Form.Field>
               </Form.Group>
             )
+            //if you press Uniform distribution, the value is "Uniform", then it will only appear max_value and min_value
+
           }else if (this.state.value == "Uniform") {
             return(
               <Form.Group widths='equal'>
@@ -175,6 +148,7 @@ class Dashboard extends Component {
             return null;
           }
     }
+    //if you input something in the blank, the input will immediately show in the blank
     handleInputChange(event) {
       const value = event.target.value;
       const name = event.target.name;
@@ -187,7 +161,10 @@ class Dashboard extends Component {
 
     }
 
-
+    //after you submit something, it will produce a new task, and set the new task's name or value ... into the value of the new tasks
+    //Then push the new task into the taskItems, which will show in the task table
+    //After you push the new_task, rerender the page, and set the innerModalOpen true to show the innerModal, which says "You have submitted one task, do you want to add more?"
+    // then make the state of task_name, mean, ... to be '', so that user can input other task names and means...
     handleSubmit(event) {
       // alert('A name was submitted: ' + this.state.task_name);
       // alert('A mean was submitted: ' + this.state.mean);
@@ -217,9 +194,13 @@ class Dashboard extends Component {
         min_value: ''
       });
     }
+    //render the homepage
+    //after you press the button "Add New Task", a modal, which is a form for users to enter task name, mean, distribution,... , will be shown.
+    //after you click the button "Submit", it trigers the innerModal
     render() {
             this.getTable();
             this.distributionForm = this.getDistributionForm();
+            //set the modal's style
             const modal = {
               textAlign: 'center'
             };
@@ -314,7 +295,6 @@ class Dashboard extends Component {
                                 <Button>Back</Button>
                               </Link>
                             </Button.Group>
-
                 </div>
               </div>
 
