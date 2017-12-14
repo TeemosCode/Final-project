@@ -30,8 +30,8 @@ class Simulator:
         """
         self.total = 0  # this would be an ndarray holding the total simulated time after simulation is finished
         self.default_size = 100000
-        self.sim_size = input("=====Enter the numbers of simulation you want for every variable [the more the better, at least over 500 times] \
-                        (If input is invalid, it will be the default size '100000')=====")
+        self.sim_size = input("=====Enter the numbers of simulation you want for every variable [the more the better, at least over 500 times] (If input is invalid, it will be the default size '100000')=====")
+        
         if not self.sim_size.isnumeric() or int(self.sim_size) < 500:
             self.sim_size = self.default_size
         else:
@@ -47,7 +47,6 @@ class Simulator:
         pd_series = pd.Series(self.total)
         plt.hist(self.total, bins=300, normed=True,label=pd_series.describe())
         plt.axvline(x_user_estimate,color="red")  # plot vertical line to represent the value of user's estimation before the simulation
-        plt.legend()
         plt.show()
 
     def final_statistical_summary(self, user_estimate: int):
@@ -176,6 +175,29 @@ class UI:
             {}\n
             """.format(title, additionals))
 
+    # Define a validation method that returns boolean based on user's input
+    def validInput(self, user_input: str, comparator: float) -> bool:
+        """
+        Validation function. Returns True if user input is numeric that could be converted to float without generating exception:
+        "ValueError: could not convert string to float" and if could be converted to float, its value would have to be smaller than
+        the comparator, this ensures that user's inputs (which would be used as various statistical values for different distributions)
+        are valid and in the appropriate value order.
+
+        Returns False if otherwise. When there is "ValueError", this function prevents program from crashing and instead returns False
+        to keep program running for the while loop that would constantly take user's inputs and check them with this function to ensure
+        the flow of the program does not break.
+
+        :param user_input: A previously user prompted input of statistical value
+        :param comparator: A number for comparison of user's input value
+        :return boolean: True or False based on the input
+        """
+        try:
+            if float(user_input) > comparator:
+                return True
+            else:
+                return False
+        except:
+            return False
 
     def menu(self, mode=1, dist="2", varname=''):
         """
@@ -184,10 +206,10 @@ class UI:
         dist (distribution) : {"1": Normal Distribution, "2" : PERT Distribution, "3" :Uniform Distribution}
         """
         if mode == 1:
-            self.mtprint("Please Enter variable name for simulation")
-            variable = input("Name of variable {}: --> ".format(len(self.varnames) + 1))
-            self.varnames[
-                variable] = {}  # set it to another dictionary where its key would be distributions and list of variable values as value
+            self.mtprint("Please Enter Task name for simulation")
+            variable = input("Name of Task {}: --> ".format(len(self.varnames) + 1))
+            # set self.varnames' value to another dictionary where its key would be distributions and list of variable values as value
+            self.varnames[variable] = {}  
             return variable  # return the variable name for keeping track of dictionary varnames growth according to that variable name
 
 
@@ -198,7 +220,7 @@ class UI:
             choice = input("Choice: --> ")
             while choice not in ['1', '2', '3'] and invalid_input < 3:
                 print(
-                    "NO SUCH CHOICE! Please try again! (We will use the default if you input invalid choice more than 3 times)")
+                    "NO SUCH CHOICE! Please type 1 or 2 or 3! (We will use the default if you input invalid choice more than 3 times)")
                 invalid_input += 1
                 choice = input("Choice: --> ")
             if invalid_input == 3:
@@ -207,62 +229,100 @@ class UI:
             return choice
 
         elif mode == 3:
+            # # Define a validation method that returns boolean based on user's input
+            # def validInput(user_input: str, comparator: float) -> bool:
+            #     """
+            #     Validation function. Returns True if user input is numeric that could be converted to float without generating exception:
+            #     "ValueError: could not convert string to float" and if could be converted to float, its value would have to be smaller than
+            #     the comparator, this ensures that user's inputs (which would be used as various statistical values for different distributions)
+            #     are valid and in the appropriate value order.
+
+            #     Returns False if otherwise. When there is "ValueError", this function prevents program from crashing and instead returns False
+            #     to keep program running for the while loop that would constantly take user's inputs and check them with this function to ensure
+            #     the flow of the program does not break.
+
+            #     :param user_input: A previously user prompted input of statistical value
+            #     :param comparator: A number for comparison of user's input value
+            #     :return boolean: True or False based on the input
+            #     """
+            #     try:
+            #         if float(user_input) > comparator:
+            #             return True
+            #         else:
+            #             return False
+            #     except:
+            #         return False
+
             dist_values = []  # for holding distribution values
             if dist == "1":  # Normal dist
-                self.mtprint("Please enter Mean and Standard_deviation of Normal Distribution (Inte the Same Unit)")
+                self.mtprint("Please enter Mean and Standard_deviation of Normal Distribution (In the Same Unit)")
                 mean = input("Mean : --> ")
-                while not mean.isnumeric() and float(mean) > 0:
-                    print("Invalid mean input, Again!")
-                    mean = input("Mean : --> ")
 
-                dist_values.append(float(mean))
+                while not self.validInput(mean, 0): # validate user input
+                    print("Invalid mean input. Please type in a numeric number that is larger than 0!")
+                    mean = input("Mean : --> ")
+                
+                mean = float(mean)
+                dist_values.append(mean)
 
                 std = input("Standard Deviation : --> ")
-                while not std.isnumeric() and float(std) < 0:
-                    print("Invalid mean input, Again!")
+                while not self.validInput(std, 0): # validate user input
+                    print("Invalid mean input. Please type in a numeric number that is larger than 0!")
                     std = input("Standard Deviation : --> ")
 
-                dist_values.append(float(std))
+                std = float(std)
+                dist_values.append(std)
 
             elif dist == "2":  # PERT dist
-                self.mtprint("Please enter WORST, MOST LIKELY and BEST case of PERT Distribution (In the Same Unit)")
-                worst = input("WORST : --> ")
-                while not worst.isnumeric() and float(worst) > 0:
-                    print("Invalid mean input, Again!")
-                    worst = input("WORST : --> ")
+                self.mtprint("Please enter BEST, MOST LIKELY and WORST case of PERT Distribution (In the Same Unit)")
 
-                dist_values.append(float(worst))
+                best = input("BEST case : --> ")
+                while not self.validInput(best, 0): # validate user input
+                    print("Invalid mean input. Please type in a numeric number that is larger than 0!!")
+                    best = input("BEST case : --> ")
+
+                best = float(best)
+               
 
                 likely = input("MOST LIKELY : --> ")
-                while not likely.isnumeric() and float(likely) <= worst:
-                    print("Invalid mean input, Again!")
+                while not self.validInput(likely, best): # validate user input
+                    print("Invalid mean input. Please type in a numeric number that is larger than BEST case!")
                     likely = input("MOST LIKELY : --> ")
 
-                dist_values.append(float(likely))
+                likely = float(likely)
+                
 
-                best = input("BEST LIKELY : --> ")
-                while not best.isnumeric() and float(best) <= likely:
-                    print("Invalid mean input, Again!")
-                    best = input("BEST LIKELY : --> ")
+                worst = input("WORST case: --> ")
+                while not self.validInput(worst, likely): # validate user input
+                    print("Invalid mean input. Please type in a numeric number that is larger than WORST case!")
+                    worst = input("WORST case: --> ")
 
-                dist_values.append(float(best))
+                worst = float(worst)
+
+                # Append it in order
+                dist_values.append(best)
+                dist_values.append(likely)
+                dist_values.append(worst)
+
 
             elif dist == "3":  # Uniform dist
                 self.mtprint("Please enter MIN and MAX value of Uniform Distribution (In the Same Unit)")
 
                 Min = input("MIN : --> ")
-                while not Min.isnumeric() and float(Min) > 0:
-                    print("Invalid mean input, Again!")
+                while not self.validInput(Min, 0): # validate user input
+                    print("Invalid mean input. Please type in a numeric number that is larger than 0!")
                     Min = input("MIN : --> ")
 
-                dist_values.append(float(Min))
+                Min = float(Min)
+                dist_values.append(Min)
 
                 Max = input("MAX : --> ")
-                while not Max.isnumeric() and float(Max) <= Min:
-                    print("Invalid mean input, Again!")
+                while not self.validInput(Max, Min): # validate user input
+                    print("Invalid mean input. Please type in a numeric number that is larger than Min!")
                     Max = input("MAX : --> ")
 
-                dist_values.append(float(Max))
+                Max = float(Max)
+                dist_values.append(Max)
 
             # set nested distribution dictionary value to dist_values
             self.varnames[varname][self.distribution_choices[dist]] = dist_values
@@ -290,8 +350,7 @@ class UI:
                                                           self.varnames[var_name]["Normal Distribution"][1],
                                                           size=simulator.sim_size)  # simulate and return ndarray
                 self.varResults[var_name] = simulated
-                print(self.varResults[var_name])
-                print("========IN NORMAL DIST======")
+
 
             elif list(self.varnames[var_name].keys())[0] == "PERT Distribution":
                 simulated = simulator.mod_pert_random(self.varnames[var_name]["PERT Distribution"][0],
@@ -314,9 +373,7 @@ class UI:
                 total += simulated
 
         self.varResults["Total"] = total
-        print(self.varnames)
-        print(self.varResults)
-        print(total)
+
         simulator.total = total
         simulator.final_statistical_summary(self.user_estimate)  # print out the statistical summary
         simulator.final_plotting(self.user_estimate)  # plot out the result
@@ -327,12 +384,12 @@ class UI:
         """
         The function used for taking input from the user for estimated total outcome of the program
         """
-        self.mtprint("What is you're estimated outcome of total time for your project duration??")
+        self.mtprint("What is you're estimated outcome of total time for your project duration?? (It would be displayed as a RED Vertical line in the simulation plot)")
         estimate = input(":--> ")
-        while not estimate.isnumeric():
-            print("Invalid input. Please type in numbers!")
+        while not self.validInput(estimate, 0):
+            print("Invalid input. Please type in numbers larger than 0!")
             estimate = input(":--> ")
-        self.user_estimate = int(estimate)  # save the user estimate value to instance variable user_estimate
+        self.user_estimate = float(estimate)  # save the user estimate value to instance variable user_estimate
 
 
     def run_program(self):
@@ -341,14 +398,13 @@ class UI:
         """
         quit = False  # flag for keeping track if user wants to end program or not
         while True and not quit:
+            # Three consecutive calls of menu with differenct modes that changes displays and takes in different inputs based on user's interaction
             varname = self.menu()
             dist_choice = self.menu(mode=2, varname=varname)
             dist_values_list = self.menu(mode=3, dist=dist_choice, varname=varname)
 
-            if len(
-                    self.varnames) > 2:  # if there are more than two variables prompt user to choose to run simulation or not
-                self.mtprint(
-                    "Would you like to run Simulation? (Press 'r' to run simulation, else keep adding in variables)")
+            if len(self.varnames) > 2:  # if there are more than two variables prompt user to choose to run simulation or not
+                self.mtprint("Would you like to run Simulation? (Press 'r' to run simulation, else keep adding in variables)")
                 simu_answer = input("Answer : --> ")
                 if simu_answer == "r":
                     # If user wants to run simulation, first let them enter their estimate value
