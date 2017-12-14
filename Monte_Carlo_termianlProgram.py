@@ -8,18 +8,25 @@ class Simulator:
     """
     The Simulator class consists of methods and instance values that are used to take in, varify user estimate value and use different
     distribution methods to generate the Monte Carlo simulation based on the values obtained by the UI class instances.
-
     Methods:
         final_plotting: Plot out final simulation plt to standard oupput.
         final_statistical_summary: Generate and output statistical summary in pandas to the standard output.
         normal_distribution: Simulation based on Normal distribution
         uniform_distribution: Simulation based on Uniform distribution
         mod_pert_random: Simulation based on PERT distribution
+
+    >>>
+    >>>
+    >>>
+    >>>
+
+
+
     """
 
     def __init__(self):
         """
-        Set the default size of simulation equal to 1000 for every variable if user inputs simulation size less than 1000
+        Set the default size of simulation equal to 100000 for every variable if user inputs simulation size less than 5--
         :param:
         """
         self.total = 0  # this would be an ndarray holding the total simulated time after simulation is finished
@@ -36,24 +43,22 @@ class Simulator:
                        x_user_estimate: int):  # Plots out the final simulation to show its distribution with a histogram
         """
         Plot the final result of our simulation
-
         :param x_user_estimate: This is user estimated time in which user thinks project will be finished
         """
-        plt.hist(self.total, bins=300, normed=True)
-        plt.axvline(x_user_estimate,
-                    color="red")  # plot vertical line to represent the value of user's estimation before the simulation
+        pd_series = pd.Series(self.total)
+        plt.hist(self.total, bins=300, normed=True,label=pd_series.describe())
+        plt.axvline(x_user_estimate,color="red")  # plot vertical line to represent the value of user's estimation before the simulation
+        plt.legend()
         plt.show()
 
     def final_statistical_summary(self, user_estimate: int):
         """
         The function will give the final statisical summary of our similation results like mean , minimum value,maximum,1st quartile,median etc
         It will also caluclate the difference between user estimated and calcukated mean time
-
         :param user_estimate: This is user estimated time in which user thinks project will be finished
         """
         print("\n==========Statistical Results=============")
-        pd_series = pd.Series(
-            self.total)  # change the ndarray of final simulation total to pandas series for its statistical methods
+        pd_series = pd.Series(self.total)  # change the ndarray of final simulation total to pandas series for its statistical methods
         print(pd_series.describe())  # print out the statistical summary in the standard output
 
         # show the difference of user's estimate with mean of simulation
@@ -63,19 +68,18 @@ class Simulator:
     def normal_distribution(self, mean: int, standard_deviation: int, size=10000):
         """
         The function run simulation on normal distribution
-
         :param mean: The mean corresponding to normal distribution
         :param standard_deviation: The standard deviation corresponding to normal distribution
         :param size: The size of simulation
         :return normal: It will return the random numbers from normal distribution of ndarray data structure
         """
         normal = np.random.normal(loc=mean, scale=standard_deviation, size=size)
+
         return normal
 
     def uniform_distribution(self, min: int, max: int, size=10000):
         """
         The function run simulation on uniform distribution
-
         :param min: The minimum value corresponding to uniform distribution
         :param max: The maximum value corresponding to uniform distribution
         :param size: The size of simulation
@@ -86,7 +90,6 @@ class Simulator:
 
     def mod_pert_random(self, low: int, likely: int, high: int, confidence=4, size=10000):
         """Produce random numbers according to the 'Modified PERT' distribution.
-
         :param low: The lowest value expected as possible.
         :param likely: The 'most likely' value, statistically, the mode.
         :param high: The highest value expected as possible.
@@ -116,7 +119,6 @@ class UI:
     User Interface class. Contains instance variables that obtains user input information on the task(variable) names, corresponding distribution,
     and number of times for the simulation. Also contains methods that control the whole program flow to simulate the actual Webpage User Interface
     on the terminal.
-
     Methods:
         mtprint: Pretty printing of titles or prompts
         menu: Controls and displays the terminal topic, prompts and context based on different mode, task and distribution (Simulate the Webpage User Interface)
@@ -124,6 +126,13 @@ class UI:
         run_simulation: Runs the simulation based on all user inputs
         user_estimates: Get the user's estimation of final project process time before showing the program's simulation output and plot the user's extimate as a red vertical line on the plot for easy comparison visualization
         run_program: Main method that evokes and controls the process of the program
+
+    >>> test=UI()
+    >>> test.menu(mode=abd, dist="2", varname='')
+    Traceback (most recent call last):
+    ...
+    NameError: name 'abd' is not defined
+    >>> test.menu(mode=1, dist="2", varname='')
     """
 
 
@@ -337,10 +346,3 @@ class UI:
 if __name__ == "__main__":
     userInterface = UI()
     userInterface.run_program()
-
-
-
-
-
-
-
