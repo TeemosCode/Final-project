@@ -60,7 +60,7 @@ Frontend UI design:
 - Semantic UI React: https://react.semantic-ui.com/introduction
 
 ## To start the web:
-1. Install dependencies: `cd Final-project`, then `npm install`
+1. Install dependencies: `cd Final-project`, `cd web`, then `npm install`
 2. Then make sure you have two terminals open; in one, type `npm start` to run the backend, and in the other, type `npm run dev` to run the frontend. 
 3. Open a browser and go to `http://localhost:3000/` to view the page.
 4. Press the button "get started", then go to the main page to add tasks and run simulation
