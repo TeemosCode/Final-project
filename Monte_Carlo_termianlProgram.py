@@ -2,6 +2,10 @@ import numpy as np
 import bokeh as bk
 import pandas as pd
 import matplotlib.pyplot as plt
+import scipy as sp
+from scipy import stats
+import math
+
 
 
 class Simulator:
@@ -51,14 +55,37 @@ class Simulator:
 
         :param user_estimate: This is user estimated time in which user thinks project will be finished
         """
-        print("\n==========Statistical Results=============")
+        print("\n---\n==========Statistical Results=============---\n")
         pd_series = pd.Series(
             self.total)  # change the ndarray of final simulation total to pandas series for its statistical methods
         print(pd_series.describe())  # print out the statistical summary in the standard output
-
         # show the difference of user's estimate with mean of simulation
         print('\n---The Difference of your Estimation and the Mean of the Simulation :  {} ---'.format(
             user_estimate - pd_series.mean()))
+
+
+        size, min_max, sim_mean, variance, skew, kurt = stats.describe(self.total) # calculating the statistical summary
+        # print out another form of statistical summary in scipy
+        print("---Statistical Results (More info)---")
+        print(stats.describe(self.total))
+
+        # Calculate statistical values
+        std = math.sqrt(variance) # standard deviation
+        z_critical = stats.norm.ppf(q = 0.95)  # Get the z-critical value*
+        pop_stdev = self.total.std()  # Get the population standard deviation
+        margin_of_error = z_critical * (pop_stdev/math.sqrt(len(self.total)))
+        CI = (sim_mean - margin_of_error,
+                       sim_mean + margin_of_error)
+
+        #CI = stats.norm.interval(0.45, loc=int(sim_mean), scale=std/math.sqrt(len(self.total))) # Calculate 95% Confidence interval range
+
+        print("\n======\nConfidence Interval Range (Here we assume its in Normal distribution) of 95% is: '[{} ~ {}]'\n======= ".format(CI[0], CI[1]))
+        if user_estimate < CI[1] and user_estimate > CI[0]:
+            print("---Your Estimate '{}' is BETWEEN 95% confidence interval of the simulation".format(user_estimate))
+        elif user_estimate > CI[1]:
+            print("---Your Estimate '{}' is LARGER than 97.5% of the simulation values".format(user_estimate))
+        else:
+            print("---Your Estimate '{}' is SMALLER than 2.5% of the simulation values".format(user_estimate))
 
     def normal_distribution(self, mean: int, standard_deviation: int, size=10000):
         """
@@ -287,8 +314,9 @@ class UI:
         print(self.varResults)
         print(total)
         simulator.total = total
-        simulator.final_plotting(self.user_estimate)  # plot out the result
         simulator.final_statistical_summary(self.user_estimate)  # print out the statistical summary
+        simulator.final_plotting(self.user_estimate)  # plot out the result
+        
 
 
     def user_estimates(self):
