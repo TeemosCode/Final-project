@@ -243,30 +243,6 @@ class UI:
             return choice
 
         elif mode == 3:
-            # # Define a validation method that returns boolean based on user's input
-            # def validInput(user_input: str, comparator: float) -> bool:
-            #     """
-            #     Validation function. Returns True if user input is numeric that could be converted to float without generating exception:
-            #     "ValueError: could not convert string to float" and if could be converted to float, its value would have to be smaller than
-            #     the comparator, this ensures that user's inputs (which would be used as various statistical values for different distributions)
-            #     are valid and in the appropriate value order.
-
-            #     Returns False if otherwise. When there is "ValueError", this function prevents program from crashing and instead returns False
-            #     to keep program running for the while loop that would constantly take user's inputs and check them with this function to ensure
-            #     the flow of the program does not break.
-
-            #     :param user_input: A previously user prompted input of statistical value
-            #     :param comparator: A number for comparison of user's input value
-            #     :return boolean: True or False based on the input
-            #     """
-            #     try:
-            #         if float(user_input) > comparator:
-            #             return True
-            #         else:
-            #             return False
-            #     except:
-            #         return False
-
             dist_values = []  # for holding distribution values
             if dist == "1":  # Normal dist
                 self.mtprint("Please enter Mean and Standard_deviation of Normal Distribution (In the Same Unit)")
