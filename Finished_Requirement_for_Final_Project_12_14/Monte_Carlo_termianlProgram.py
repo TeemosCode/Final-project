@@ -17,10 +17,6 @@ class Simulator:
         normal_distribution: Simulation based on Normal distribution
         uniform_distribution: Simulation based on Uniform distribution
         mod_pert_random: Simulation based on PERT distribution
-    >>>
-    >>>
-    >>>
-    >>>
     """
 
     def __init__(self):
@@ -38,15 +34,34 @@ class Simulator:
             self.sim_size = int(
                 self.sim_size)  # coeric it to integer type so it won't create a bug when calling distribution methods
 
-    def final_plotting(self,
-                       x_user_estimate: int):  # Plots out the final simulation to show its distribution with a histogram
+    def final_plotting(self,x_user_estimate: int):  # Plots out the final simulation to show its distribution with a histogram
         """
         Plot the final result of our simulation
         :param x_user_estimate: This is user estimated time in which user thinks project will be finished
         """
+        fig = plt.figure()
         pd_series = pd.Series(self.total)
         plt.hist(self.total, bins=300, normed=True,label=pd_series.describe())
+        fig.suptitle('Monte_Carlo_Simulation', fontsize=20)
+        plt.xlabel('Time Duration ->', fontsize=18)
+        plt.ylabel('Probabilities ->', fontsize=16)
         plt.axvline(x_user_estimate,color="red")  # plot vertical line to represent the value of user's estimation before the simulation
+        plt.show()
+
+    def final_box_plotting(self):
+        """
+        Plot the final result of our simulation (Box Plot)
+        :param:
+        """
+        pd_series = pd.Series(self.total)
+        box = plt.boxplot(pd_series, showmeans=True)
+        plt.setp(box['boxes'][0], color='green')
+        plt.setp(box['caps'][0], color='green')
+        plt.setp(box['whiskers'][0], color='green')
+        plt.grid(True, axis='y')  # let's add a grid on y-axis
+        plt.title('Monte_carlo_Statistics', fontsize=30)  # chart title
+        plt.ylabel('Time Duration')  # y axis title
+        plt.xticks([1], ['Box Plot'])
         plt.show()
 
     def final_statistical_summary(self, user_estimate: int):
@@ -56,12 +71,10 @@ class Simulator:
         :param user_estimate: This is user estimated time in which user thinks project will be finished
         """
         print("\n---\n==========Statistical Results=============---\n")
-        pd_series = pd.Series(
-            self.total)  # change the ndarray of final simulation total to pandas series for its statistical methods
+        pd_series = pd.Series(self.total)  # change the ndarray of final simulation total to pandas series for its statistical methods
         print(pd_series.describe())  # print out the statistical summary in the standard output
         # show the difference of user's estimate with mean of simulation
-        print('\n---The Difference of your Estimation and the Mean of the Simulation :  {} ---'.format(
-            user_estimate - pd_series.mean()))
+        print('\n---The Difference of your Estimation and the Mean of the Simulation :  {} ---'.format(user_estimate - pd_series.mean()))
 
 
         size, min_max, sim_mean, variance, skew, kurt = stats.describe(self.total) # calculating the statistical summary
@@ -77,7 +90,6 @@ class Simulator:
         CI = (sim_mean - margin_of_error,
                        sim_mean + margin_of_error)
 
-        #CI = stats.norm.interval(0.45, loc=int(sim_mean), scale=std/math.sqrt(len(self.total))) # Calculate 95% Confidence interval range
 
         print("\n======\nConfidence Interval Range (Here we assume its in Normal distribution) of 95% is: '[{} ~ {}]'\n======= ".format(CI[0], CI[1]))
         if user_estimate < CI[1] and user_estimate > CI[0]:
@@ -107,7 +119,9 @@ class Simulator:
         :param size: The size of simulation
         :return uniform: It will return the random numbers from uniform distribution of ndarray data structure
         """
+
         uniform = np.random.uniform(min, max, size=size)
+
         return uniform
 
     def mod_pert_random(self, low: int, likely: int, high: int, confidence=4, size=10000):
@@ -153,7 +167,7 @@ class UI:
     Traceback (most recent call last):
     ...
     NameError: name 'abd' is not defined
-    >>> test.menu(mode=1, dist="2", varname='')
+
     """
 
 
@@ -377,7 +391,7 @@ class UI:
         simulator.total = total
         simulator.final_statistical_summary(self.user_estimate)  # print out the statistical summary
         simulator.final_plotting(self.user_estimate)  # plot out the result
-
+        simulator.final_box_plotting()
 
 
     def user_estimates(self):
